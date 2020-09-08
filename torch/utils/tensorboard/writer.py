@@ -711,7 +711,7 @@ class SummaryWriter(object):
         torch._C._log_api_usage_once("tensorboard.logging.add_onnx_graph")
         self._get_file_writer().add_onnx_graph(load_onnx_graph(prototxt))
 
-    def add_graph(self, model, input_to_model=None, verbose=False):
+    def add_graph(self, model, input_to_model=None, stict=True, verbose=False):
         # prohibit second call?
         # no, let tensorboard handle it and show its warning message.
         """Add graph data to summary.
@@ -725,7 +725,7 @@ class SummaryWriter(object):
         torch._C._log_api_usage_once("tensorboard.logging.add_graph")
         if hasattr(model, 'forward'):
             # A valid PyTorch model should have a 'forward' method
-            self._get_file_writer().add_graph(graph(model, input_to_model, verbose))
+            self._get_file_writer().add_graph(graph(model, input_to_model, strict, verbose))
         else:
             # Caffe2 models do not have the 'forward' method
             from caffe2.proto import caffe2_pb2

@@ -270,7 +270,7 @@ def parse(graph, trace, args=None, omit_useless_nodes=True):
     return nodes_py.to_proto()
 
 
-def graph(model, args, verbose=False):
+def graph(model, args, strict=True, verbose=False):
     """
     This method processes a PyTorch model and produces a `GraphDef` proto
     that can be logged to TensorBoard.
@@ -283,7 +283,7 @@ def graph(model, args, verbose=False):
     """
     with torch.onnx.select_model_mode_for_export(model, torch.onnx.TrainingMode.EVAL):  # TODO: move outside of torch.onnx?
         try:
-            trace = torch.jit.trace(model, args)
+            trace = torch.jit.trace(model, args, strict=strict)
             graph = trace.graph
             torch._C._jit_pass_inline(graph)
         except RuntimeError as e:

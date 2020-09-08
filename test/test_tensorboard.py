@@ -622,6 +622,19 @@ class TestTensorBoardPytorchGraph(BaseTestCase):
                 model = getattr(torchvision.models, model_name)()
                 w.add_graph(model, torch.zeros(input_shape))
 
+    @skipIfNoTorchVision
+    def test_torchvision_segmentation_smoke(self):
+        model_input_shapes = {
+            'fcn_resnet50': (2, 3, 224, 224),
+            'fcn_resnet101': (2, 3, 224, 224),
+            'deeplabv3_resnet50': (2, 3, 224, 224),
+            'deeplabv3_resnet100': (2, 3, 224, 224),
+        }
+        for model_name, input_shape in model_input_shapes.items():
+            with self.createSummaryWriter() as w:
+                model = getattr(torchvision.models.segmentation, model_name)()
+                w.add_graph(model, torch.zeros(input_shape), strict=False)
+
 class TestTensorBoardFigure(BaseTestCase):
     @skipIfNoMatplotlib
     def test_figure(self):
