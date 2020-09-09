@@ -623,7 +623,7 @@ class TestTensorBoardPytorchGraph(BaseTestCase):
                 w.add_graph(model, torch.zeros(input_shape))
 
     @skipIfNoTorchVision
-    def test_torchvision_segmentation_smoke(self):
+    def test_torchvision_segmentation(self):
         model_input_shapes = {
             'fcn_resnet50': (2, 3, 224, 224),
             'fcn_resnet101': (2, 3, 224, 224),
